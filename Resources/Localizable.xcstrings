@@ -1,0 +1,492 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@\n\nYou can also change it in System Settings → General → Login Items." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@\n\nシステム設定 → 一般 → ログイン項目 からも変更できます．"
+          }
+        }
+      }
+    },
+    "%@ (last %lld lines)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (last %2$lld lines)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@（最後の %2$lld 行）"
+          }
+        }
+      }
+    },
+    "%@ from the next server start" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回のサーバ起動から %@"
+          }
+        }
+      }
+    },
+    "1 Minute" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1分"
+          }
+        }
+      }
+    },
+    "30 Minutes" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30分"
+          }
+        }
+      }
+    },
+    "5 Minutes (ollama Default)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5分（ollama の既定）"
+          }
+        }
+      }
+    },
+    "Apps using the server lose their connection." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用中のアプリは接続が切れます．"
+          }
+        }
+      }
+    },
+    "By %@ (pid %@), not by ollama." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ollama ではなく %1$@（pid %2$@）が使っています．"
+          }
+        }
+      }
+    },
+    "By a process of another user or of the system." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "別のユーザかシステムのプロセスが使っています．"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
+    },
+    "Click to copy" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クリックでコピー"
+          }
+        }
+      }
+    },
+    "Could not change the login item" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン項目を変更できませんでした"
+          }
+        }
+      }
+    },
+    "Keep Models Loaded" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モデルを保持する時間"
+          }
+        }
+      }
+    },
+    "Local only (127.0.0.1), cloud features off" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ローカル専用（127.0.0.1），クラウド機能は無効"
+          }
+        }
+      }
+    },
+    "Needs approval in System Settings → General → Login Items" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システム設定 → 一般 → ログイン項目 で許可が必要です"
+          }
+        }
+      }
+    },
+    "No server output yet. Paddock records the output of servers it starts." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ出力はありません．Paddock が起動したサーバの出力をここに記録します．"
+          }
+        }
+      }
+    },
+    "Open Paddock at Login" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン時に Paddock を開く"
+          }
+        }
+      }
+    },
+    "Paddock cannot vouch for its cloud and network settings." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外部通信と公開範囲の設定は Paddock では保証できません．"
+          }
+        }
+      }
+    },
+    "Paddock is not allowed to stop this server (pid %@)." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このサーバ（pid %@）を停止する権限がありません．"
+          }
+        }
+      }
+    },
+    "Paddock looks in /opt/homebrew/bin, /usr/local/bin and Ollama.app." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "探す場所: /opt/homebrew/bin，/usr/local/bin，Ollama.app"
+          }
+        }
+      }
+    },
+    "Port %@ Is in Use" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポート %@ は使用中"
+          }
+        }
+      }
+    },
+    "Quit Paddock" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paddock を終了"
+          }
+        }
+      }
+    },
+    "Quit Paddock and Stop Server" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paddock を終了してサーバを停止"
+          }
+        }
+      }
+    },
+    "Server Log" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバのログ"
+          }
+        }
+      }
+    },
+    "Server Off" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバ停止中"
+          }
+        }
+      }
+    },
+    "Server On" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバ起動中"
+          }
+        }
+      }
+    },
+    "Server On, Started Outside Paddock" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバ起動中（Paddock 以外で起動）"
+          }
+        }
+      }
+    },
+    "Show Log in Finder" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログを Finder で表示"
+          }
+        }
+      }
+    },
+    "Show Log…" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログを表示…"
+          }
+        }
+      }
+    },
+    "Show in Finder" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finder で表示"
+          }
+        }
+      }
+    },
+    "Since %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ から"
+          }
+        }
+      }
+    },
+    "Starting Server…" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバを起動しています…"
+          }
+        }
+      }
+    },
+    "Stop Server" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        }
+      }
+    },
+    "Stop Server…" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバを停止…"
+          }
+        }
+      }
+    },
+    "Stop a server Paddock did not start?" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paddock が起動していないサーバを停止しますか？"
+          }
+        }
+      }
+    },
+    "Stopping Server…" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバを停止しています…"
+          }
+        }
+      }
+    },
+    "The running server was started outside Paddock, so its output is not recorded. This is the last server Paddock started." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動いているサーバは Paddock 以外で起動されたため，出力は記録されていません．これは Paddock が最後に起動したサーバのログです．"
+          }
+        }
+      }
+    },
+    "The server stopped unexpectedly. The log has the details." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバが予期せず止まりました．詳しくはログを見てください．"
+          }
+        }
+      }
+    },
+    "The server stopped while starting. The log has the details." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバが起動の途中で止まりました．詳しくはログを見てください．"
+          }
+        }
+      }
+    },
+    "The server was not listening after %lld seconds, so Paddock stopped it." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 秒たっても待ち受けを始めなかったため，サーバを停止しました．"
+          }
+        }
+      }
+    },
+    "This server (pid %@) was started outside Paddock, for example from Terminal. Apps using it lose their connection." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このサーバ（pid %@）はターミナルなど Paddock 以外から起動されました．使用中のアプリは接続が切れます．"
+          }
+        }
+      }
+    },
+    "Turn Off Server" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバを OFF にする"
+          }
+        }
+      }
+    },
+    "Turn On Server" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サーバを ON にする"
+          }
+        }
+      }
+    },
+    "Turn On Server When Paddock Opens" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paddock を開いたときにサーバを ON にする"
+          }
+        }
+      }
+    },
+    "Unload Immediately" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すぐに解放"
+          }
+        }
+      }
+    },
+    "Used from the next server start. Apps can override it for each request." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次回のサーバ起動から有効．アプリは要求ごとに上書きできます．"
+          }
+        }
+      }
+    },
+    "ollama Is Not Installed" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ollama が入っていません"
+          }
+        }
+      }
+    },
+    "ollama could not be started: %@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ollama を起動できませんでした: %@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

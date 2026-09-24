@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Build output
+Paddock.app/
+build/
+dist/
