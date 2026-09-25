@@ -5,7 +5,8 @@ import Foundation
 // nothing but 127.0.0.1. It reads the sockets from the kernel (libproc) every --interval-ms milliseconds, writes
 // each distinct socket the first time it appears, notes processes as they start and exit, and notes changes to
 // the modification time of --watch-file paths. A socket that opens and closes between two samples is missed, so
-// the report states the sampling interval and the longest gap between samples actually achieved.
+// the report states the sampling interval and the longest gap between samples actually achieved. Time the Mac
+// spends asleep appears as GAP lines. Files given with --watch-file are checked every 5 seconds.
 //
 // Usage:
 //   swiftc -O -o build/netwatch tools/netwatch.swift
@@ -74,7 +75,7 @@ func record(_ line: String) {
 
 // MARK: - Processes
 
-func processName(_ pid: pid_t) -> String {
+func lookUpProcessName(_ pid: pid_t) -> String {
     var buffer = [CChar](repeating: 0, count: 256)
     guard proc_name(pid, &buffer, UInt32(buffer.count)) > 0 else { return "?" }
     return String(decoding: buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }, as: UTF8.self)
@@ -86,6 +87,16 @@ func children(of pid: pid_t) -> [pid_t] {
     var pids = [pid_t](repeating: 0, count: Int(estimate) + 16)
     let count = proc_listchildpids(pid, &pids, Int32(pids.count * MemoryLayout<pid_t>.stride))
     return Array(pids.prefix(Int(max(count, 0))))
+}
+
+/// Names are looked up once per process; a pid is not reused while its process is in the tree.
+nonisolated(unsafe) var processNames: [pid_t: String] = [:]
+
+func processName(_ pid: pid_t) -> String {
+    if let name = processNames[pid] { return name }
+    let name = lookUpProcessName(pid)
+    processNames[pid] = name
+    return name
 }
 
 /// The process and all its descendants.
@@ -205,6 +216,8 @@ let started = Date()
 var samples = 0
 var maxGapMs = 0.0
 var lastSample = DispatchTime.now()
+var lastWall = Date()
+var lastFileCheck = Date.distantPast
 var lastHeartbeat = Date()
 var endReason = "duration reached"
 
@@ -216,15 +229,25 @@ while true {
     }
 
     let now = DispatchTime.now()
+    let wall = Date()
     if samples > 0 {
-        maxGapMs = max(maxGapMs, Double(now.uptimeNanoseconds - lastSample.uptimeNanoseconds) / 1_000_000)
+        let gapMs = Double(now.uptimeNanoseconds - lastSample.uptimeNanoseconds) / 1_000_000
+        maxGapMs = max(maxGapMs, gapMs)
+        // The uptime clock stops while the Mac sleeps; the wall clock does not. A long wall-clock gap is sleep:
+        // the server was suspended too, but nothing was sampled, so the record says so.
+        let wallGap = wall.timeIntervalSince(lastWall)
+        if wallGap > 2 { record("GAP \(Int(wallGap)) s without samples (uptime advanced \(Int(gapMs)) ms)") }
     }
+    lastWall = wall
     lastSample = now
     samples += 1
 
     let pids = tree(of: options.pid)
     for pid in pids where !knownPIDs.contains(pid) { record("PROC START pid=\(pid) name=\(processName(pid))") }
-    for pid in knownPIDs.subtracting(pids) { record("PROC EXIT pid=\(pid)") }
+    for pid in knownPIDs.subtracting(pids) {
+        record("PROC EXIT pid=\(pid)")
+        processNames[pid] = nil
+    }
     knownPIDs = Set(pids)
 
     let date = Date()
@@ -239,7 +262,7 @@ while true {
         }
     }
 
-    for path in options.watchFiles {
+    for path in options.watchFiles where date.timeIntervalSince(lastFileCheck) >= 5 {
         let time = modificationTime(path)
         if time != fileTimes[path] {
             record("FILE CHANGED \(path) mtime=\(time)")
@@ -247,6 +270,7 @@ while true {
         }
     }
 
+    if date.timeIntervalSince(lastFileCheck) >= 5 { lastFileCheck = date }
     if date.timeIntervalSince(lastHeartbeat) >= 600 {
         record(
             "HEARTBEAT samples=\(samples) max_gap_ms=\(Int(maxGapMs)) processes=\(pids.count) "

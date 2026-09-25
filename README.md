@@ -53,17 +53,34 @@ chat, or install ollama. If ollama is missing, it says so and nothing more.
 
 ## Network
 
+What Paddock guarantees by construction:
+
 - Paddock itself only opens TCP connections to `127.0.0.1:11434`, to see whether something is listening. It sends
   no request, so the server logs nothing. It talks to nothing else.
-- The server listens on `127.0.0.1` only.
-- With `OLLAMA_NO_CLOUD=1`, ollama 0.33.3 logs `Ollama cloud disabled: true` and turns off remote inference, web
-  search, and its model-recommendation downloads. The last one matters: without the setting, the server fetches
-  `https://ollama.com/api/experimental/model-recommendations` about every four hours for as long as it runs, which
-  is most likely the traffic seen earlier from a forgotten server. The binary skips that fetch with the message
-  `skipping model recommendations refresh because cloud is disabled`.
-- Checked on 2026-09-23: listing every socket of `ollama` and `llama-server` about three times a second for ten
-  minutes (2,174 samples), through a start, a model load and a request, a restart, and a server started in
-  Terminal, found only `127.0.0.1` addresses. The four-hourly refresh was not waited for; its skip message will appear in the log.
+- The server it starts gets `OLLAMA_HOST=127.0.0.1:11434` and `OLLAMA_NO_CLOUD=1`. The server's own log then says
+  `Listening on 127.0.0.1:11434` and `Ollama cloud disabled: true`.
+
+What has been observed (records in [`docs/verification/`](docs/verification/)):
+
+- 2026-09-23, 10 minutes: the sockets of `ollama` and `llama-server`, listed with `lsof` about three times a second
+  (2,174 samples) through a start, a model load and a request, a restart, and a server started in Terminal, showed
+  only `127.0.0.1` addresses. A later positive control showed that sampling of this kind misses short connections,
+  so this check could not have caught a brief one.
+- 2026-09-25, 25 minutes, before any refresh was due: sockets sampled every 50 ms, which a positive control showed
+  catches connections open for 50 ms or more, and the system resolver's log of lookups by ollama. Only
+  `127.0.0.1` sockets; one lookup, of `localhost`, when a model runner started.
+- From 2026-09-25: a record over several days of a Paddock-started server left running, covering its scheduled
+  refreshes (`docs/verification/2026-09-25-multi-day/`). In progress; its result will be added here.
+
+What the ollama 0.33.3 binary says, read from its strings, not observed in operation:
+
+- It contains `https://ollama.com/api/experimental/model-recommendations` and `https://ollama.com/api/web_search`,
+  and logs `model recommendations cache sleep scheduled wait=…` at start (between 4 h 0 min and 4 h 45 min in the
+  runs seen so far).
+- It contains `skipping model recommendations refresh because cloud is disabled`. That suggests the refresh is
+  skipped under `OLLAMA_NO_CLOUD=1`; the long run above tests it.
+- `~/.ollama/cache/model-recommendations.json` was last written on 2026-09-12. That a forgotten server's traffic
+  to ollama.com was this refresh is a hypothesis resting on these strings and that date alone.
 
 ## How Paddock keeps track
 
