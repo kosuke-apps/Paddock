@@ -52,7 +52,8 @@ adds what is specific to Paddock. The README is the user-facing description, inc
   - `StatusMenu.swift` — the status item, the menu (rebuilt state in `update()`, refreshed in `menuNeedsUpdate`),
     the external-stop confirmation, and `Presentation`, which maps controller state to all visible text.
   - `StatusHeaderView.swift` — custom view at the top of the menu (dot, bold state, detail, red notice).
-  - `StatusIcon.swift` — template switch icons: off, transition, on, external (`!`), missing.
+  - `StatusIcon.swift` — template fence icons with a state mark: none (off, dimmed), ring (transition), dot (on),
+    `!` (external), struck through (missing, dimmed).
   - `LogWindowController.swift` — last 500 lines, follows the file through a `DispatchSource` file watch.
   - `Preferences.swift` — `UserDefaults` settings and `LoginItem`.
 - `tests/main.swift` — test runner; `tests/support/fake-ollama.swift` builds a binary named `ollama` that prints its

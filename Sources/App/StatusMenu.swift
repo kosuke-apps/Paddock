@@ -109,6 +109,7 @@ final class StatusMenu: NSObject, NSMenuDelegate {
             let image = StatusIcon.image(for: state.icon)
             image.accessibilityDescription = "Paddock: \(state.title)"
             button.image = image
+            button.appearsDisabled = state.icon.isDimmed
             button.toolTip = "Paddock: \(state.title)"
         }
         header.show(title: state.title, detail: state.detail, notice: state.notice, tone: state.tone)

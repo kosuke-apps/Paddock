@@ -19,15 +19,15 @@ for days without anyone noticing.
 - **On and off.** Starts `ollama serve` with `OLLAMA_HOST=127.0.0.1:11434` (nothing outside this Mac can connect)
   and `OLLAMA_NO_CLOUD=1`, and stops it again. Every other inherited `OLLAMA_*` variable is dropped, so nothing set
   elsewhere (for example with `launchctl setenv`) can widen access.
-- **State at a glance.** The menu bar icon is a switch:
+- **State at a glance.** The menu bar icon is a paddock fence with a mark to its right:
 
   | Icon | Meaning |
   |---|---|
-  | outlined, knob left | off |
-  | filled, knob right | on, started by Paddock |
-  | filled, knob right, then `!` | on, but started outside Paddock (for example `ollama serve` in Terminal); its cloud and network settings cannot be vouched for |
-  | outlined, knob in the middle | starting or stopping |
-  | outlined, struck through | ollama is not installed |
+  | fence alone, dimmed | off |
+  | fence and a filled dot | on, started by Paddock |
+  | fence and `!` | on, but started outside Paddock (for example `ollama serve` in Terminal); its cloud and network settings cannot be vouched for |
+  | fence and a ring | starting or stopping |
+  | fence struck through, dimmed | ollama is not installed |
 
   The menu says the same in words, with the time the server started, so a server left running for days shows up.
 - **Stopping a server started elsewhere** asks first. Paddock only ever stops a process named `ollama`; if something
@@ -166,7 +166,7 @@ elsewhere, a port held by something else, taking a server back after a crash, an
   - `AppDelegate.swift`: launch, SIGTERM, wake, and stopping the server before quitting.
   - `StatusMenu.swift`: the menu bar item, the menu, and all user-facing text about the server.
   - `StatusHeaderView.swift`: the coloured state line at the top of the menu.
-  - `StatusIcon.swift`: the switch icons.
+  - `StatusIcon.swift`: the fence icons.
   - `LogWindowController.swift`: the log window.
   - `Preferences.swift`: settings and the login item.
 - `Resources/`: `Info.plist`, the String Catalog (English, Japanese), the app icon.

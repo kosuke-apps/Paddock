@@ -1,7 +1,7 @@
 import AppKit
 
 // Draws the app icon and writes the PNG files of an .iconset.
-// The motif is the menu bar icon: a toggle switch, here switched on.
+// The motif is the name: a white paddock fence on a dark plate, with a green lamp for a server that is on.
 
 func draw(_ pixels: Int) -> Data {
     let rep = NSBitmapImageRep(
@@ -13,35 +13,47 @@ func draw(_ pixels: Int) -> Data {
     let size = CGFloat(pixels)
     let inset = size * 0.098
     let plate = CGRect(x: inset, y: inset, width: size - inset * 2, height: size - inset * 2)
+    func x(_ fraction: CGFloat) -> CGFloat { plate.minX + plate.width * fraction }
+    func y(_ fraction: CGFloat) -> CGFloat { plate.minY + plate.height * fraction }
 
     // Background: the rounded plate of a macOS app icon.
     let background = NSBezierPath(
         roundedRect: plate, xRadius: plate.width * 0.2237, yRadius: plate.width * 0.2237)
     NSGradient(colors: [
-        NSColor(srgbRed: 0.22, green: 0.25, blue: 0.24, alpha: 1),
-        NSColor(srgbRed: 0.07, green: 0.09, blue: 0.08, alpha: 1),
+        NSColor(srgbRed: 0.20, green: 0.26, blue: 0.22, alpha: 1),
+        NSColor(srgbRed: 0.06, green: 0.09, blue: 0.07, alpha: 1),
     ])!.draw(in: background, angle: -90)
 
-    // The switch track, on.
-    let trackHeight = plate.height * 0.34
-    let track = CGRect(
-        x: plate.minX + plate.width * 0.14, y: plate.midY - trackHeight / 2,
-        width: plate.width * 0.72, height: trackHeight)
-    NSColor(srgbRed: 0.20, green: 0.78, blue: 0.40, alpha: 1).setFill()
-    NSBezierPath(roundedRect: track, xRadius: trackHeight / 2, yRadius: trackHeight / 2).fill()
+    // The ground the fence stands on.
+    NSColor(white: 1, alpha: 0.12).setFill()
+    NSBezierPath(rect: CGRect(x: x(0.06), y: y(0.20), width: plate.width * 0.88, height: plate.height * 0.012)).fill()
 
-    // The knob, on the right.
-    let knobInset = trackHeight * 0.1
-    let knobSize = trackHeight - knobInset * 2
-    let knob = CGRect(
-        x: track.maxX - knobInset - knobSize, y: track.minY + knobInset, width: knobSize, height: knobSize)
-    let shadow = NSShadow()
-    shadow.shadowColor = NSColor(white: 0, alpha: 0.35)
-    shadow.shadowBlurRadius = size * 0.012
-    shadow.shadowOffset = NSSize(width: 0, height: -size * 0.006)
-    shadow.set()
-    NSColor(white: 0.98, alpha: 1).setFill()
-    NSBezierPath(ovalIn: knob).fill()
+    // The fence: four pointed posts and two rails.
+    NSColor(white: 0.96, alpha: 1).setFill()
+    let half = plate.width * 0.045
+    for fraction in [0.16, 0.39, 0.62, 0.85] as [CGFloat] {
+        let post = NSBezierPath()
+        post.move(to: NSPoint(x: x(fraction) - half, y: y(0.21)))
+        post.line(to: NSPoint(x: x(fraction) + half, y: y(0.21)))
+        post.line(to: NSPoint(x: x(fraction) + half, y: y(0.56)))
+        post.line(to: NSPoint(x: x(fraction), y: y(0.64)))
+        post.line(to: NSPoint(x: x(fraction) - half, y: y(0.56)))
+        post.close()
+        post.fill()
+    }
+    for fraction in [0.29, 0.45] as [CGFloat] {
+        NSBezierPath(rect: CGRect(x: x(0.16), y: y(fraction), width: x(0.85) - x(0.16), height: plate.height * 0.055))
+            .fill()
+    }
+
+    // The lamp, on.
+    let lamp = CGRect(x: x(0.70), y: y(0.72), width: plate.width * 0.14, height: plate.width * 0.14)
+    let glow = NSShadow()
+    glow.shadowColor = NSColor(srgbRed: 0.3, green: 0.95, blue: 0.5, alpha: 0.8)
+    glow.shadowBlurRadius = size * 0.04
+    glow.set()
+    NSColor(srgbRed: 0.25, green: 0.85, blue: 0.45, alpha: 1).setFill()
+    NSBezierPath(ovalIn: lamp).fill()
 
     NSGraphicsContext.restoreGraphicsState()
     return rep.representation(using: .png, properties: [:])!
