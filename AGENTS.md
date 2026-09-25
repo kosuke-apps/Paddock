@@ -59,6 +59,10 @@ adds what is specific to Paddock. The README is the user-facing description, inc
   `OLLAMA_*` environment and listens where `OLLAMA_HOST` says (`FAKE_OLLAMA_EXIT`, `FAKE_OLLAMA_LISTEN_DELAY`,
   `FAKE_OLLAMA_IGNORE_TERM` simulate failures). Tests use ports 11490–11499 and never touch port 11434.
 - `tools/make_icon.swift` (writes `Resources/AppIcon.icns` when missing), `tools/check_strings.swift`.
+- `tools/netwatch.swift` samples every socket of a process tree every 50 ms and flags anything not loopback-only;
+  `tools/long-run.sh <new dir>` records a Paddock-started server past its model-recommendation refresh with it and
+  with the mDNSResponder log. Records live in `docs/verification/<date>-<name>/`, one new directory per run, never
+  rewritten. Read `docs/verification/2026-09-25-positive-control/README.md` for what these recorders can miss.
 
 ### Pitfalls already met
 
