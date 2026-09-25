@@ -69,8 +69,12 @@ What has been observed (records in [`docs/verification/`](docs/verification/)):
 - 2026-09-25, 25 minutes, before any refresh was due: sockets sampled every 50 ms, which a positive control showed
   catches connections open for 50 ms or more, and the system resolver's log of lookups by ollama. Only
   `127.0.0.1` sockets; one lookup, of `localhost`, when a model runner started.
-- From 2026-09-25: a record over several days of a Paddock-started server left running, covering its scheduled
-  refreshes (`docs/verification/2026-09-25-multi-day/`). In progress; its result will be added here.
+- 2026-09-25, 7 h 13 min of normal use with sleep, sampling every 200 ms (connections shorter than about 200 ms
+  are invisible to it) plus the resolver log (`docs/verification/2026-09-25-multi-day/`): only `127.0.0.1`
+  sockets, and lookups only of `localhost`. One refresh came due, at 14:06:55; the server looked up nothing,
+  connected nowhere, left the cached recommendations untouched, and scheduled the next refresh with no failure
+  counted. That fits a skipped refresh, on the strength of one event.
+- From 2026-09-25 16:34: the same record continues over several days (`docs/verification/2026-09-25-multi-day-2/`).
 
 What the ollama 0.33.3 binary says, read from its strings, not observed in operation:
 
