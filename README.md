@@ -8,6 +8,10 @@ Several Mac utilities (Gijiroku, taiyaku) use a language model through ollama. T
 does. It exists because a server started by hand and forgotten keeps running, and keeps talking to ollama.com,
 for days without anyone noticing.
 
+Requirements: macOS 26 on Apple silicon, and [Ollama](https://ollama.com) installed separately (for example
+`brew install ollama`). Ollama is a separate program under its own licence (MIT); Paddock starts and stops it but
+does not include it.
+
 ## The contract with other apps
 
 - The server is **`http://127.0.0.1:11434`**.
@@ -120,7 +124,19 @@ which builds it; the first row is before any opening. The 10-second check costs 
 AppKit's own background work. A loaded model is the server's cost, not Paddock's: gemma3:4b adds a `llama-server`
 process of about 3 GB (4.4 GB RSS with a 32k context) until the keep-alive time runs out.
 
-## Build and install
+## Permissions
+
+Paddock asks for none of the privacy permissions (no Accessibility, Input Monitoring, Screen Recording, microphone or
+files). The first time it opens from Applications it adds itself to Login Items, so its icon is there after every
+login; turn that off in its menu or in System Settings → General → Login Items. See [PRIVACY.md](PRIVACY.md).
+
+## Install
+
+Download `Paddock-<version>.zip` from the Releases page, unzip it, and move `Paddock.app` to Applications. Paddock is
+signed but not notarized, so the first time macOS refuses to open it: open System Settings → Privacy & Security and
+click **Open Anyway**.
+
+## Build
 
 Requires Xcode (the build uses `swiftc`, `xcstringstool` and `swift-format` from it). There is no Xcode project on
 purpose: `build.sh` is the whole build definition.
@@ -131,8 +147,8 @@ purpose: `build.sh` is the whole build definition.
 ./build.sh --release  # also zips it into dist/ for a GitHub release
 ```
 
-Run it from `/Applications`, so that the login item points at a stable place. Paddock is not notarized; the first
-time, macOS refuses to open it. Open System Settings → Privacy & Security and click **Open Anyway**.
+Run it from `/Applications`, so that the login item points at a stable place. Without the "Mac Utilities Code
+Signing" certificate in the keychain the build is signed ad hoc, with a warning.
 
 ## Uninstall
 
@@ -175,3 +191,10 @@ elsewhere, a port held by something else, taking a server back after a crash, an
   - `Preferences.swift`: settings and the login item.
 - `Resources/`: `Info.plist`, the String Catalog (English, Japanese), the app icon.
 - `tools/`: the icon generator and the String Catalog check.
+
+## License
+
+MIT. Copyright (c) 2026 Kosuke Satake. See [LICENSE](LICENSE) and, for what Paddock uses but does not include,
+[THIRD_PARTY.md](THIRD_PARTY.md).
+
+This app was built with the help of Claude (Anthropic) through Claude Code; design, review and testing are by Kosuke Satake. Anthropic does not endorse this app.

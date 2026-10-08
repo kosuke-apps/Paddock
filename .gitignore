@@ -5,3 +5,6 @@
 Paddock.app/
 build/
 dist/
+
+# Label with private notes, managed by `labels`
+.label.toml
