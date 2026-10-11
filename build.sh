@@ -9,7 +9,7 @@ cd "$(dirname "$0")"
 
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 APP="Paddock.app"
-BUNDLE_ID="local.paddock"
+BUNDLE_ID="dev.kosuke.paddock"
 TARGET="arm64-apple-macos26.0"
 # The one certificate shared by every Mac Utilities app. See ../SpellBar/docs/code-signing.md.
 SIGNING_IDENTITY_NAME="Mac Utilities Code Signing"

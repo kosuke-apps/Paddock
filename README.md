@@ -115,6 +115,13 @@ Download `Paddock-<version>.zip` from the Releases page, unzip it, and move `Pad
 signed but not notarized, so the first time macOS refuses to open it: open System Settings → Privacy & Security and
 click **Open Anyway**.
 
+### Upgrading from a pre-release build
+
+Builds made before the first release used the bundle identifier `local.paddock`. The first launch of a newer build
+copies their settings over and registers its own login item, so System Settings → General → Login Items then lists
+Paddock.app twice and cannot tell you which is which. Remove both with **−**, then choose **Open Paddock at Login**
+in Paddock's menu again. `defaults delete local.paddock` removes the old settings.
+
 ## Build
 
 Requires Xcode (the build uses `swiftc`, `xcstringstool` and `swift-format` from it). There is no Xcode project on
@@ -137,7 +144,7 @@ Signing" certificate in the keychain the build is signed ad hoc, with a warning.
 
    ```bash
    rm -rf ~/Library/Logs/Paddock
-   defaults delete local.paddock
+   defaults delete dev.kosuke.paddock
    ```
 
 ollama and its models in `~/.ollama` are not Paddock's and are left alone.
@@ -161,6 +168,7 @@ elsewhere, a port held by something else, taking a server back after a crash, an
   - `ProcessInspector.swift`: process details and the listener of a port, read from the kernel (libproc).
   - `PortProbe.swift`: the loopback connection check.
   - `LogStore.swift`: log files, their rotation, and reading the last lines.
+  - `SettingsMigration.swift`: carries settings over from the pre-release bundle identifier.
 - `Sources/App/` (AppKit)
   - `AppDelegate.swift`: launch, SIGTERM, wake, and stopping the server before quitting.
   - `StatusMenu.swift`: the menu bar item, the menu, and all user-facing text about the server.

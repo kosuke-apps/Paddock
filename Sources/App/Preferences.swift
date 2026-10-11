@@ -1,7 +1,7 @@
 import Foundation
 import ServiceManagement
 
-/// Paddock's settings, stored in its user defaults (`defaults read local.paddock`).
+/// Paddock's settings, stored in its user defaults (`defaults read dev.kosuke.paddock`).
 @MainActor
 final class Preferences {
     private let defaults: UserDefaults

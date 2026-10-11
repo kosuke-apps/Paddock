@@ -20,7 +20,8 @@ adds what is specific to Paddock. The README is the user-facing description, inc
 ## Technical context
 
 - Swift 6 language mode, AppKit, macOS 26, arm64. No Xcode project and no dependencies: `build.sh` assembles the
-  bundle with `swiftc`. Bundle identifier `local.paddock` (the shared prefix is undecided; see `../AGENTS.md`).
+  bundle with `swiftc`. Bundle identifier `dev.kosuke.paddock`. Builds before the first release used
+  `local.paddock`; `SettingsMigration` copies their settings over once.
 - `LSUIElement` menu bar app with an `NSStatusItem`; login item through `SMAppService.mainApp`, registered on the
   first launch from an Applications folder only.
 - Signed with the shared `Mac Utilities Code Signing` certificate; ad-hoc with a warning when it is missing.
@@ -46,6 +47,7 @@ adds what is specific to Paddock. The README is the user-facing description, inc
   - `PortProbe.swift` — non-blocking connect to 127.0.0.1; sends nothing.
   - `LogStore.swift` — `~/Library/Logs/Paddock/ollama-serve-*.log`, one per start, five kept, whole-file deletion
     (never truncation), `O_APPEND` writes, tail reading.
+  - `SettingsMigration.swift` — copies the settings of the pre-release identifier `local.paddock` once.
 - `Sources/App/` — AppKit.
   - `AppDelegate.swift` — wiring; SIGTERM becomes Quit; wake triggers a refresh; `applicationShouldTerminate`
     stops the owned server with `.terminateLater` plus a run-loop timer as a safety net.
@@ -78,7 +80,7 @@ adds what is specific to Paddock. The README is the user-facing description, inc
 - Test and lint: `./tests/run.sh` (runs `swift-format lint --strict`, then the tests).
 - Format: `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swift-format format -i -r Sources tests tools`
 - Run: `open Paddock.app`. Japanese UI: `open Paddock.app --args -AppleLanguages '(ja)'`.
-- Settings and state: `defaults read local.paddock`. Logs: `~/Library/Logs/Paddock/`.
+- Settings and state: `defaults read dev.kosuke.paddock`. Logs: `~/Library/Logs/Paddock/`.
 
 ## Definition of done
 

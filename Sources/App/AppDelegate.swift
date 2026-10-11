@@ -8,6 +8,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var terminationSignal: DispatchSourceSignal?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Before anything reads the settings or creates the menu bar item, whose position is one of them.
+        SettingsMigration.migrate(
+            legacy: UserDefaults.standard.persistentDomain(forName: SettingsMigration.legacyDomain), into: .standard)
         LoginItem.setUpOnFirstLaunch(preferences)
 
         controller = ServerController(configuration: .standard())

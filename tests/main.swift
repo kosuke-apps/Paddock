@@ -325,6 +325,36 @@ test("a server from an earlier run is taken back as Paddock's own") {
     check(third.status == .stopped && defaults.data(forKey: "ownedServer") == nil, "\(third.status)")
 }
 
+test("settings from the old bundle identifier are carried over once") {
+    let suite = "paddock.tests.migration"
+    suites.insert(suite)
+    let defaults = UserDefaults(suiteName: suite)!
+    defaults.removePersistentDomain(forName: suite)
+    defaults.set("30m", forKey: "keepAlive")  // already chosen under the new identifier: kept
+    let legacy: [String: Any] = [
+        "keepAlive": "1m", "startServerWhenOpened": true, "didSetUpLoginItem": true,
+        "NSStatusItem Preferred Position Item-0": 678, "unrelated": "x",
+    ]
+    SettingsMigration.migrate(legacy: legacy, into: defaults)
+    check(defaults.string(forKey: "keepAlive") == "30m", "overwrote an existing setting")
+    check(defaults.bool(forKey: "startServerWhenOpened"), "setting not carried over")
+    check(defaults.integer(forKey: "NSStatusItem Preferred Position Item-0") == 678, "icon position not carried over")
+    check(defaults.object(forKey: "didSetUpLoginItem") == nil, "login item state carried over")
+    check(defaults.object(forKey: "unrelated") == nil, "unlisted key carried over")
+
+    // A second launch changes nothing, even if the old settings change.
+    defaults.removeObject(forKey: "startServerWhenOpened")
+    SettingsMigration.migrate(legacy: legacy, into: defaults)
+    check(defaults.object(forKey: "startServerWhenOpened") == nil, "migrated twice")
+
+    // No old settings: only the marker is written.
+    let fresh = UserDefaults(suiteName: suite + ".fresh")!
+    suites.insert(suite + ".fresh")
+    fresh.removePersistentDomain(forName: suite + ".fresh")
+    SettingsMigration.migrate(legacy: nil, into: fresh)
+    check(fresh.bool(forKey: SettingsMigration.doneKey) && fresh.object(forKey: "keepAlive") == nil, "fresh install")
+}
+
 test("nothing starts without ollama") {
     let controller = makeController(port: 11499, name: "missing", binary: "/nonexistent/ollama")
     check(controller.binary == nil, "binary found")
