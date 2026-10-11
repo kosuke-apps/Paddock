@@ -62,8 +62,8 @@ adds what is specific to Paddock. The README is the user-facing description, inc
 - `tools/make_icon.swift` (writes `Resources/AppIcon.icns` when missing), `tools/check_strings.swift`.
 - `tools/netwatch.swift` samples every socket of a process tree every 50 ms and flags anything not loopback-only;
   `tools/long-run.sh <new dir>` records a Paddock-started server past its model-recommendation refresh with it and
-  with the mDNSResponder log. Records live in `docs/verification/<date>-<name>/`, one new directory per run, never
-  rewritten. Read `docs/verification/2026-09-25-positive-control/README.md` for what these recorders can miss.
+  with the mDNSResponder log. Write records outside the repository: they hold local paths and usage times. What the
+  recorders can miss is in `docs/network-verification.md`.
 
 ### Pitfalls already met
 

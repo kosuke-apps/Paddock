@@ -64,31 +64,10 @@ What Paddock guarantees by construction:
 - The server it starts gets `OLLAMA_HOST=127.0.0.1:11434` and `OLLAMA_NO_CLOUD=1`. The server's own log then says
   `Listening on 127.0.0.1:11434` and `Ollama cloud disabled: true`.
 
-What has been observed (records in [`docs/verification/`](docs/verification/)):
-
-- 2026-09-23, 10 minutes: the sockets of `ollama` and `llama-server`, listed with `lsof` about three times a second
-  (2,174 samples) through a start, a model load and a request, a restart, and a server started in Terminal, showed
-  only `127.0.0.1` addresses. A later positive control showed that sampling of this kind misses short connections,
-  so this check could not have caught a brief one.
-- 2026-09-25, 25 minutes, before any refresh was due: sockets sampled every 50 ms, which a positive control showed
-  catches connections open for 50 ms or more, and the system resolver's log of lookups by ollama. Only
-  `127.0.0.1` sockets; one lookup, of `localhost`, when a model runner started.
-- 2026-09-25, 7 h 13 min of normal use with sleep, sampling every 200 ms (connections shorter than about 200 ms
-  are invisible to it) plus the resolver log (`docs/verification/2026-09-25-multi-day/`): only `127.0.0.1`
-  sockets, and lookups only of `localhost`. One refresh came due, at 14:06:55; the server looked up nothing,
-  connected nowhere, left the cached recommendations untouched, and scheduled the next refresh with no failure
-  counted. That fits a skipped refresh, on the strength of one event.
-- From 2026-09-25 16:34: the same record continues over several days (`docs/verification/2026-09-25-multi-day-2/`).
-
-What the ollama 0.33.3 binary says, read from its strings, not observed in operation:
-
-- It contains `https://ollama.com/api/experimental/model-recommendations` and `https://ollama.com/api/web_search`,
-  and logs `model recommendations cache sleep scheduled wait=…` at start (between 4 h 0 min and 4 h 45 min in the
-  runs seen so far).
-- It contains `skipping model recommendations refresh because cloud is disabled`. That suggests the refresh is
-  skipped under `OLLAMA_NO_CLOUD=1`; the long run above tests it.
-- `~/.ollama/cache/model-recommendations.json` was last written on 2026-09-12. That a forgotten server's traffic
-  to ollama.com was this refresh is a hypothesis resting on these strings and that date alone.
+What has been observed: in more than seven hours of recorded ordinary use, a server started this way connected to
+nothing but 127.0.0.1, and none of the seven model-recommendation refreshes that came due then or in the following
+week touched its cache. The method, the numbers and their limits are in
+[docs/network-verification.md](docs/network-verification.md).
 
 ## How Paddock keeps track
 
