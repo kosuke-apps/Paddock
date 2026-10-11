@@ -111,9 +111,17 @@ login; turn that off in its menu or in System Settings → General → Login Ite
 
 ## Install
 
-Download `Paddock-<version>.zip` from the Releases page, unzip it, and move `Paddock.app` to Applications. Paddock is
-signed but not notarized, so the first time macOS refuses to open it: open System Settings → Privacy & Security and
-click **Open Anyway**.
+1. Download `Paddock-<version>.dmg` and `Paddock-<version>.dmg.sha256` from the
+   [Releases page](https://github.com/kosuke-apps/Paddock/releases).
+2. Optionally, check the download. In the folder that holds both files, this prints `OK`:
+
+   ```bash
+   shasum -a 256 -c Paddock-<version>.dmg.sha256
+   ```
+
+3. Open the dmg and drag `Paddock.app` onto the Applications folder next to it.
+4. Open Paddock from Applications. It is signed but not notarized, so the first time macOS refuses to open it: open
+   System Settings → Privacy & Security and click **Open Anyway**.
 
 ### Upgrading from a pre-release build
 
@@ -130,7 +138,7 @@ purpose: `build.sh` is the whole build definition.
 ```bash
 ./build.sh            # builds ./Paddock.app, signed with the shared "Mac Utilities Code Signing" certificate
 ./build.sh --install  # also copies it to /Applications, quitting (and so stopping) a running copy first
-./build.sh --release  # also zips it into dist/ for a GitHub release
+./build.sh --release  # also packs dist/Paddock-<version>.dmg and its SHA-256 for a GitHub release
 ```
 
 Run it from `/Applications`, so that the login item points at a stable place. Without the "Mac Utilities Code

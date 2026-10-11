@@ -3,7 +3,7 @@
 #
 #   ./build.sh            build ./Paddock.app
 #   ./build.sh --install  build, then copy it to /Applications (a running copy is quit first)
-#   ./build.sh --release  build, then zip it into dist/
+#   ./build.sh --release  build, then pack it into dist/Paddock-<version>.dmg with its SHA-256
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -92,11 +92,41 @@ if [ "$INSTALL" = 1 ]; then
 fi
 
 if [ "$RELEASE" = 1 ]; then
+  # A release is only ever made with the shared certificate, so its signature matches every other build.
+  if [ "$count" -ne 1 ]; then
+    echo "error: a release needs \"$SIGNING_IDENTITY_NAME\" in the keychain" >&2
+    exit 1
+  fi
   version=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Resources/Info.plist)
-  mkdir -p dist
-  zip="dist/Paddock-$version.zip"
-  rm -f "$zip"
-  # ditto keeps the bundle's signature intact; zip(1) does not.
-  ditto -c -k --keepParent "$APP" "$zip"
-  echo "▸ Packaged: $(pwd)/$zip"
+  dmg="dist/Paddock-$version.dmg"
+  if [ -e "$dmg" ]; then
+    echo "error: $dmg exists; a release file is never overwritten" >&2
+    exit 1
+  fi
+  echo "▸ Packaging $version"
+  staging=build/dmg
+  rm -rf "$staging"
+  mkdir -p "$staging" dist
+  # ditto keeps the bundle's signature intact. The link lets the user drag the app into Applications.
+  ditto "$APP" "$staging/$APP"
+  ln -s /Applications "$staging/Applications"
+  hdiutil create -volname Paddock -srcfolder "$staging" -format UDZO "$dmg" >/dev/null
+  (cd dist && shasum -a 256 "Paddock-$version.dmg" > "Paddock-$version.dmg.sha256")
+
+  # Check what was packed: mount the image read-only, then verify the app's signature and identity.
+  mount=$(mktemp -d)
+  hdiutil attach -nobrowse -readonly -mountpoint "$mount" "$dmg" >/dev/null
+  verified=0
+  if codesign --verify --deep --strict "$mount/$APP" \
+    && codesign -d -r- "$mount/$APP" 2>&1 | grep -q "identifier \"$BUNDLE_ID\""; then
+    verified=1
+  fi
+  hdiutil detach "$mount" >/dev/null
+  rmdir "$mount"
+  if [ "$verified" -ne 1 ]; then
+    echo "error: the app in $dmg failed the signature or identifier check" >&2
+    exit 1
+  fi
+  echo "▸ Packaged: $(pwd)/$dmg (signature and identifier verified)"
+  echo "  SHA-256: $(cut -d' ' -f1 "dist/Paddock-$version.dmg.sha256")"
 fi

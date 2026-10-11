@@ -76,7 +76,8 @@ adds what is specific to Paddock. The README is the user-facing description, inc
 
 ## Commands
 
-- Build: `./build.sh` (`--install` copies to `/Applications`, `--release` zips into `dist/`).
+- Build: `./build.sh` (`--install` copies to `/Applications`, `--release` makes `dist/Paddock-<version>.dmg`
+  and its `.sha256`, after checking the packed app's signature and identifier).
 - Test and lint: `./tests/run.sh` (runs `swift-format lint --strict`, then the tests).
 - Format: `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swift-format format -i -r Sources tests tools`
 - Run: `open Paddock.app`. Japanese UI: `open Paddock.app --args -AppleLanguages '(ja)'`.
