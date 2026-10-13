@@ -3,7 +3,7 @@
 A menu bar app that runs the one shared ollama server on this Mac: it turns the server on and off, shows at a
 glance whether it is running and who started it, and always starts it local-only with ollama's cloud features off.
 
-Several Mac utilities (Gijiroku, taiyaku) use a language model through ollama. They share one set of models in
+Several Mac utilities (Gijiroku, Taiyaku) use a language model through ollama. They share one set of models in
 `~/.ollama/models` and one server, and none of them starts or stops that server. Paddock is the only thing that
 does. It exists because a server started by hand and forgotten keeps running, and keeps talking to ollama.com,
 for days without anyone noticing.

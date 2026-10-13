@@ -7,7 +7,7 @@ adds what is specific to Paddock. The README is the user-facing description, inc
 
 ## Product
 
-- Purpose: Gijiroku, taiyaku, and later apps use LLMs through one ollama server on `http://127.0.0.1:11434`, sharing
+- Purpose: Gijiroku, Taiyaku, and later apps use LLMs through one ollama server on `http://127.0.0.1:11434`, sharing
   `~/.ollama/models`. They only connect; Paddock alone starts and stops the server. It exists because a forgotten
   `ollama serve` ran for six days and talked to ollama.com the whole time.
 - Core journey: open the menu, Turn On Server, apps work; Quit Paddock (or Turn Off) stops it.
